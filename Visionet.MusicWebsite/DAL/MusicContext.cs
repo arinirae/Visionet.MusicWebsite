@@ -22,6 +22,7 @@ namespace Visionet.MusicWebsite.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             Database.SetInitializer<MusicContext>(null);
+            modelBuilder.Entity<User>().HasMany(m => m.Friends).WithMany(); //hasil tabel M:M
             base.OnModelCreating(modelBuilder);
         }
     }
