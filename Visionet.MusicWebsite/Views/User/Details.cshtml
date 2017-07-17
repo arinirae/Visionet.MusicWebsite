@@ -1,0 +1,27 @@
+﻿@model Visionet.MusicWebsite.Models.User
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<table class="table">
+    @Html.HiddenFor(x => x.IdUser, new { id = "IdUser" })
+
+    <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Music</th>
+        <th>Friends</th>
+    </tr>
+</table>
+
+<script>
+    function menampilkanTemanDenganMusikSama() {
+        $.ajax({
+            url: '/UserController/'
+        })
+    }
+</script>
+
