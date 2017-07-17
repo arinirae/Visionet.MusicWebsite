@@ -9,8 +9,20 @@ namespace Visionet.MusicWebsite.DAL
 {
     public class MusicContext : DbContext
     {
+        public MusicContext()
+        {
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
+        }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Music> Musics { get; set; }
+        
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer<MusicContext>(null);
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
