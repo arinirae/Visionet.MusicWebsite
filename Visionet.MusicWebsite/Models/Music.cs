@@ -11,7 +11,8 @@ namespace Visionet.MusicWebsite.Models
         [Key]
         public int? IdMusic { get; set; }
         public string FavMusic { get; set; }
-        public virtual User Users { get; set; }
-        public int? IdUser { get; set; }
+        //public virtual User Users { get; set; }
+        //public int? IdUser { get; set; }
+        //public ICollection<Music> Songs { get; set; }
     }
 }

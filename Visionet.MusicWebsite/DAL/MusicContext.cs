@@ -23,6 +23,7 @@ namespace Visionet.MusicWebsite.DAL
         {
             Database.SetInitializer<MusicContext>(null);
             modelBuilder.Entity<User>().HasMany(m => m.Friends).WithMany(); //hasil tabel M:M
+            modelBuilder.Entity<User>().HasMany(m => m.Musics).WithMany(); //hasil tabel M:M
             base.OnModelCreating(modelBuilder);
         }
     }
