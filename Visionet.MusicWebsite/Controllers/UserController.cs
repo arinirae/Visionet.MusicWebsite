@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Visionet.MusicWebsite.DAL;
 using Visionet.MusicWebsite.Models;
 using System.Data.Entity;
+using Visionet.MusicWebsite.ViewModel;
 
 namespace Visionet.MusicWebsite.Controllers
 {
@@ -36,16 +37,19 @@ namespace Visionet.MusicWebsite.Controllers
             return db.Users.Where(user => user.IdUser == IdUser).ToList();
         }
 
-        public ActionResult GetCatatanJsonByUserId(int IdUser)
+        public ActionResult GetCatatanJsonByUserId(int idUser)
         {
-            var result = GetCatatanByUserId(IdUser);
+            var result = GetCatatanByUserId(idUser);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         // DETAILS
         public ActionResult Details(int? id)
         {
-            return View();
+            return View(new MusicVM
+            {
+                IdUser = id.Value
+            });
         }
         
         private class Dto
@@ -59,7 +63,7 @@ namespace Visionet.MusicWebsite.Controllers
             if (id == null) return new HttpStatusCodeResult(404);
 
             var user = db.Users.Include(x => x.Friends).Include(v => v.Musics);
-        
+
             var TemanDenganMusikSama = db.Database.SqlQuery<Dto>(@"
             SELECT 
                    teman.Name
@@ -83,7 +87,14 @@ namespace Visionet.MusicWebsite.Controllers
 			                ON musikKamu.IdMusic = um.Music_IdMusic
 		                WHERE kamu.IdUser = {0}
 	                )
-            ORDER BY kamu.Name", id).ToList();
+            ORDER BY kamu.Name", id)
+            .ToList()
+            .GroupBy(x => x.FavMusic)
+            .Select(x => new Dto
+            {
+                FavMusic = x.Key,
+                Name = string.Join(", ", x.Select(v => v.Name))
+            });
 
             return Json(TemanDenganMusikSama, JsonRequestBehavior.AllowGet);
         }

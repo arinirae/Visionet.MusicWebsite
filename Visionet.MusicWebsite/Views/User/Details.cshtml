@@ -1,4 +1,4 @@
-﻿@model Visionet.MusicWebsite.Models.User
+﻿@model Visionet.MusicWebsite.ViewModel.MusicVM
 
 @{
     ViewBag.Title = "Details";
@@ -6,21 +6,39 @@
 
 <h2>Details</h2>
 
-<table class="table">
-    @Html.HiddenFor(x => x.IdUser, new { id = "IdUser" })
+@Html.HiddenFor(x => x.IdUser)
 
+<table class="table" id="table-music">
     <tr>
-        <th>User ID</th>
-        <th>Name</th>
         <th>Music</th>
         <th>Friends</th>
     </tr>
 </table>
 
+<button class="btn-primary btn" onclick="menampilkanTemanDenganMusikSama()" type="button">Refresh</button>
+
 <script>
     function menampilkanTemanDenganMusikSama() {
+
         $.ajax({
-            url: '/UserController/'
+            url: '/User/AmbilTemanDenganMusikSama',
+            data: {
+                id : $("#IdUser").val()
+            },
+            dataType: 'json',
+            method: 'post'
+        }).then(function (hasil) {
+            $(".music-table-row").remove(); // ini agar kalau ditekan refresh tidak berualang 
+                                            // .clear() mematikan anak2nya juga
+
+            $.each(hasil, function (i, item) {
+                console.log(item);
+                var rows = "<tr class='music-table-row'>" 
+                    + "<td>" + item.FavMusic + "</td>"
+                    + "<td>" + item.Name + "</td>"
+                    + "</tr>";
+                $('#table-music').append(rows);
+            });
         })
     }
 </script>
