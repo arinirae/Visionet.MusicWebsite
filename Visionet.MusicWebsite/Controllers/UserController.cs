@@ -18,7 +18,7 @@ namespace Visionet.MusicWebsite.Controllers
             db = new MusicContext();
         }
 
-        // GET: Catatan
+        // GET: User
         public ActionResult Index(int? id)
         {
             var user = from c in db.Users
@@ -56,6 +56,13 @@ namespace Visionet.MusicWebsite.Controllers
         {
             public string Name { get; set; }
             public string FavMusic { get; set; }
+        }
+
+        public ActionResult AmbilDaftarTemanKecuali(int? id)
+        {
+            var result = db.Users.Where(x => x.IdUser != id).ToList();
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AmbilTemanDenganMusikSama(int? id)
@@ -97,6 +104,18 @@ namespace Visionet.MusicWebsite.Controllers
             });
 
             return Json(TemanDenganMusikSama, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AddFriend(int id)
+        {
+            var model = new UserVM();
+            model.FriendList= db.Users.Where(x => x.IdUser != id)
+                .Select(y => new UserVM
+                {
+                    IdUser = y.IdUser,
+                    Name = y.Name
+                });
+            return View(model);
         }
     }
 }

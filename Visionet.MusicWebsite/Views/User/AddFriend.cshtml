@@ -1,0 +1,69 @@
+﻿@model Visionet.MusicWebsite.ViewModel.UserVM
+@{
+    ViewBag.Title = "AddFriend";
+}
+
+<h2>AddFriend</h2>
+
+@Html.HiddenFor(x => x.IdUser, new { id = "userId" })
+
+<table class="table" id="table-userteman">
+    <tr>
+        <th>FRIEND LIST</th>
+        <th>BUTTON ADD</th>
+    </tr>
+
+    @foreach (var teman in Model.FriendList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => teman.Name)
+            </td>
+            <td>
+                <button onclick="addFriend(@teman.IdUser)">ADD</button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    function tampilkanTemanKecualiId() {
+        $.ajax({
+            url: '/User/AmbilDaftarTemanKecuali',
+            data: {
+                id: $("#IdUser").val()
+            },
+            datatype: 'json',
+            method : 'post'
+        }).then(function (hasil) {
+            $('.friend-table-row').remove();
+
+            $.each(hasil, function (i, item) {
+                console.log(item);
+                var rows = "<tr class='friend-table-row'>"
+                    + "<td>" + item.Name + "</td>"
+                    + "<tr>";
+
+                $('.table-userteman').append(rows);
+            });
+            })
+    }
+
+    function getFriend() {
+        var friend = {};
+        friend.IdUser = $('#userId').val();
+        return friend;
+    }
+
+    function addFriend() {
+        $.ajax({
+            url: '/user/createAjax/',
+            data: getCatatanreturn(),
+            dataType: 'json',
+            method: 'POST'
+        }).then(function (hasil) {
+            console.log(hasil);
+        })
+    }
+</script>
