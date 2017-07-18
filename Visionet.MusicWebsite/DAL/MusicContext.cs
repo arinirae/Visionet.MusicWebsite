@@ -17,7 +17,9 @@ namespace Visionet.MusicWebsite.DAL
 
         public DbSet<User> Users { get; set; }
         public DbSet<Music> Musics { get; set; }
-        
+        public DbSet<UserUsers> UserUsers { get; set; }
+        public DbSet<UserMusics> UserModels { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -50,16 +50,23 @@
             })
     }
 
-    function getFriend() {
-        var friend = {};
-        friend.IdUser = $('#userId').val();
-        return friend;
+    function getFriendReturn() {
+        var useruser = {};
+        useruser.IdUser = $("#userId").val()
+
+        return useruser;
     }
 
-    function addFriend() {
+    function addFriend(idTeman) {
+         
+        var parameters = {
+            User_IdUser: $("#userId").val(),
+            User_IdUser1: idTeman
+        };
+        console.log(parameters);
         $.ajax({
-            url: '/user/createAjax/',
-            data: getCatatanreturn(),
+            url: '/User/createAjax/',
+            data: parameters,
             dataType: 'json',
             method: 'POST'
         }).then(function (hasil) {

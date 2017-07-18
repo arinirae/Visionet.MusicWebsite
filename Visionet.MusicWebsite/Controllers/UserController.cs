@@ -7,6 +7,7 @@ using Visionet.MusicWebsite.DAL;
 using Visionet.MusicWebsite.Models;
 using System.Data.Entity;
 using Visionet.MusicWebsite.ViewModel;
+using System.Data.Entity.Validation;
 
 namespace Visionet.MusicWebsite.Controllers
 {
@@ -115,7 +116,30 @@ namespace Visionet.MusicWebsite.Controllers
                     IdUser = y.IdUser,
                     Name = y.Name
                 });
+            model.IdUser = id;
             return View(model);
+        }
+
+        public object createAjax(UserUsers userUsers)
+
+        {
+
+            var useruser = new UserUsers();
+            useruser.User_IdUser = userUsers.User_IdUser;
+            useruser.User_IdUser1 = userUsers.User_IdUser1;
+
+            db.UserUsers.Add(useruser);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var showMessage = ex.EntityValidationErrors
+                    .SelectMany(x => x.ValidationErrors)
+                    .SelectMany(x => x.ErrorMessage);
+            }
+            return "success";
         }
     }
 }
